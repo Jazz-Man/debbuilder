@@ -16,6 +16,7 @@ RUN set -ex \
                nasm \
                git \
                wget \
+               clang-7 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* /var/tmp/* \
