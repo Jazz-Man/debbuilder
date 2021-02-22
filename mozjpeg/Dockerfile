@@ -1,25 +1,24 @@
 FROM debbuilder
-#RUN set -ex \
-#    && mkdir -p ~/.ssh && sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list \
-#    && apt-get update \
-#    && apt-get install -y --no-install-recommends \
-#               openssh-client \
-#               build-essential \
-#               cdbs \
-#               devscripts \
-#               equivs \
-#               checkinstall \
-#               fakeroot \
-#               locales \
-#               pkg-config \
-#               cmake \
-#               nasm \
-#               git \
-#               wget \
-#               clang \
-#    && apt-get clean \
-#    && rm -rf /var/lib/apt/lists/* \
-#    && rm -rf /tmp/* /var/tmp/* \
-#    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
-#
-#ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.utf8
+WORKDIR work
+COPY ./deb-control.in /work
+RUN apt-get -yqq update \
+     && apt-get install -y --no-install-recommends libpng-dev \
+     && git clone https://github.com/mozilla/mozjpeg \
+     && mv deb-control.in mozjpeg/release \
+     && mkdir -p mozjpeg/build && cd mozjpeg/build \
+     && cmake ../  -G"Unix Makefiles" \
+         -DCMAKE_INSTALL_PREFIX=/usr \
+         -DWITH_JPEG8=1 \
+         -DENABLE_STATIC=1 \
+         -DPNG_SUPPORTED=1 \
+         -DWITH_12BIT=1 \
+         -DWITH_ARITH_DEC=1 \
+         -DWITH_ARITH_ENC=1 \
+         -DWITH_JPEG7=1 \
+         -DWITH_MEM_SRCDST=1 \
+         -DWITH_SIMD=1 \
+         -DWITH_TURBOJPEG=1 \
+     && make deb && cp *.deb /work \
+     && apt-get clean \
+     && rm -rf /var/lib/apt/lists/* \
+     && rm -rf /tmp/* /var/tmp/*
