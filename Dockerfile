@@ -23,6 +23,8 @@ RUN set -ex \
                clang \
                zsh \
                vim \
+               debmake \
+               software-properties-common \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* /var/tmp/* \
