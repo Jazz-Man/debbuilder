@@ -1,0 +1,20 @@
+version: "3"
+services:
+  debbuilder:
+    image: debbuilder
+    hostname: debbuilder
+    build: .
+    volumes:
+      - ~/.ssh:/root/.ssh:rw
+  mozjpeg:
+    image: mozjpeg
+    hostname: mozjpeg
+    build: ./mozjpeg
+    depends_on:
+      - debbuilder
+  jpegxl:
+    image: jpegxl
+    hostname: jpegxl
+    build: ./jpegxl
+    depends_on:
+      - debbuilder
