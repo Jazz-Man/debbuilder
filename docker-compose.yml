@@ -10,8 +10,20 @@ services:
     build: ./mozjpeg
     depends_on:
       - debbuilder
+
+  libtiff:
+    image: libtiff
+    build: ./libtiff
+    depends_on:
+      - mozjpeg
+  libwebp:
+    image: libwebp
+    build: ./libwebp
+    depends_on:
+      - mozjpeg
+      - libtiff
   jpegxl:
     image: jpegxl
     build: ./jpegxl
     depends_on:
-      - mozjpeg
+      - libwebp

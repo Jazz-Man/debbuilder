@@ -2,7 +2,7 @@ FROM debbuilder
 WORKDIR work
 COPY ./deb-control.in /work
 RUN apt-get -yqq update \
-     && apt-get install -y --no-install-recommends libpng-dev \
+     && apt-get install -y libpng-dev \
      && git clone https://github.com/mozilla/mozjpeg \
      && mv deb-control.in mozjpeg/release \
      && mkdir -p mozjpeg/build && cd mozjpeg/build \
@@ -20,5 +20,8 @@ RUN apt-get -yqq update \
          -DWITH_TURBOJPEG=1 \
      && make deb && cp *.deb /work \
      && apt-get clean \
+     && apt remove -y libpng-dev \
+     && apt autoremove -y \
+     && apt autoclean \
      && rm -rf /var/lib/apt/lists/* \
      && rm -rf /tmp/* /var/tmp/*
