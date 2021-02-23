@@ -7,7 +7,8 @@ RUN apt-get -yqq update \
     && apt-get install -y libjbig-dev zlib1g-dev liblzma-dev \
     && git clone https://gitlab.com/libtiff/libtiff.git \
     && cd libtiff \
-    && ./autogen.sh && ./configure \
+    && ./autogen.sh \
+    && ./configure \
         --prefix=/usr \
         --enable-cxx \
         --enable-defer-strile-load \
@@ -24,9 +25,11 @@ RUN apt-get -yqq update \
         --install=no \
         -D \
         --default \
-    && mkdir -p /work/deb/ && cp *.deb /work/deb \
+    && mkdir -p /work/deb/ \
+    && cp *.deb /work/deb \
     && apt remove -y mozjpeg libjbig-dev zlib1g-dev liblzma-dev \
     && apt autoremove -y \
     && apt autoclean \
+    && rm -rf /work/libtiff/ \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* /var/tmp/*

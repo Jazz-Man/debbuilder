@@ -5,7 +5,8 @@ ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.utf8
 COPY scripts/99_norecommends /etc/apt/apt.conf.d/99_norecommends
 
 RUN set -ex \
-    && mkdir -p ~/.ssh && sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list \
+    && mkdir -p ~/.ssh \
+    && sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list \
     && apt-get update \
     && apt-get install -y \
                openssh-client \

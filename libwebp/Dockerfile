@@ -8,10 +8,11 @@ RUN apt-get -yqq update \
     && apt-get install -y libgif-dev libsdl1.2-dev \
     && git clone https://github.com/webmproject/libwebp.git \
     && cd libwebp \
-    && ./autogen.sh && ./configure \
-            --enable-everything \
-            --enable-asserts \
-            --enable-swap-16bit-csp \
+    && ./autogen.sh \
+    && ./configure \
+        --enable-everything \
+        --enable-asserts \
+        --enable-swap-16bit-csp \
     && checkinstall \
         --pkgname=libwebp-dev \
         --pkgversion=1.2.0 \
@@ -22,9 +23,11 @@ RUN apt-get -yqq update \
         --install=no \
         -D \
         --default \
-    && mkdir -p /work/deb/ && cp *.deb /work/deb \
+    && mkdir -p /work/deb/ \
+    && cp *.deb /work/deb \
     && apt remove -y mozjpeg libtiff-dev libgif-dev libsdl1.2-dev \
     && apt autoremove -y \
     && apt autoclean \
+    && rm -rf /work/libwebp \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* /var/tmp/*

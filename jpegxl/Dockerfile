@@ -14,14 +14,22 @@ RUN apt-get -yqq update \
     && cmake ../ \
        -DCMAKE_BUILD_TYPE=Release \
        -DBUILD_TESTING=OFF \
-       -DJPEGXL_FORCE_SYSTEM_BROTLI=TRUE
+       -DJPEGXL_FORCE_SYSTEM_BROTLI=TRUE \
     && checkinstall \
         --pkgname=libjxl-dev \
         --pkgversion=0.3.2 \
-        --requires="libbrotli-dev,libgif-dev,libjpeg-dev,libopenexr-dev,libpng-dev,libwebp-dev" \
+        --requires="libbrotli-dev,libgif-dev,mozjpeg,libopenexr-dev,libpng-dev,libwebp-dev,libtiff-dev,libgoogle-perftools-dev" \
         --provides="libjxl-dev,libhwy-dev" \
         --maintainer="vsokolyk@gmail.com" \
         --backup=no \
         --install=no \
         -D \
-        --default
+        --default \
+    && cp *.deb /work \
+    && apt-get clean \
+    && apt remove -y libtiff-dev libbrotli-dev libgif-dev mozjpeg libopenexr-dev libpng-dev libwebp-dev \
+    && apt autoremove -y \
+    && apt autoclean \
+    && rm -rf /work/jpeg-xl/* \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* /var/tmp/*

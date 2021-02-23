@@ -2,28 +2,37 @@ version: "3"
 services:
   debbuilder:
     image: debbuilder
-    build: .
-    volumes:
-      - ~/.ssh:/root/.ssh:rw
+    container_name: debbuilder_base
+    environment:
+      DEBIAN_FRONTEND: noninteractive
+      LANG: en_US.utf8
+    build:
+      context: .
   mozjpeg:
     image: mozjpeg
+    container_name: mozjpeg
     build: ./mozjpeg
-    depends_on:
+    links:
       - debbuilder
 
   libtiff:
     image: libtiff
+    container_name: libtiff
     build: ./libtiff
-    depends_on:
+    links:
       - mozjpeg
+
   libwebp:
     image: libwebp
+    container_name: libwebp
     build: ./libwebp
-    depends_on:
+    links:
       - mozjpeg
       - libtiff
+
   jpegxl:
     image: jpegxl
+    container_name: jpegxl
     build: ./jpegxl
-    depends_on:
+    links:
       - libwebp
