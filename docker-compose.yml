@@ -36,3 +36,8 @@ services:
     build: ./jpegxl
     links:
       - libwebp
+
+  image_magick:
+    image: image_magick
+    container_name: image_magick
+    build: ./ImageMagick
