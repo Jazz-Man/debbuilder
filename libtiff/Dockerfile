@@ -1,8 +1,8 @@
-FROM debbuilder
+FROM vsokolyk/debbuilder
 WORKDIR work
 COPY --from=mozjpeg /work/*.deb /work/
 
-RUN apt-get -yqq update \
+RUN /update.sh \
     && apt-get install -y /work/*.deb \
     && apt-get install -y libjbig-dev zlib1g-dev liblzma-dev \
     && git clone https://gitlab.com/libtiff/libtiff.git \
@@ -19,7 +19,7 @@ RUN apt-get -yqq update \
         --pkgname=libtiff-dev \
         --pkgversion=4.2.0 \
         --requires="mozjpeg,libjbig-dev,zlib1g-dev,liblzma-dev" \
-        --provides=libtiff-dev \
+        --provides="libtiff-dev,libtiff5,libtiff5-dev" \
         --maintainer="vsokolyk@gmail.com" \
         --backup=no \
         --install=no \
@@ -28,8 +28,4 @@ RUN apt-get -yqq update \
     && mkdir -p /work/deb/ \
     && cp *.deb /work/deb \
     && apt remove -y mozjpeg libjbig-dev zlib1g-dev liblzma-dev \
-    && apt autoremove -y \
-    && apt autoclean \
-    && rm -rf /work/libtiff/ \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/* /var/tmp/*
+    && /clean.sh
