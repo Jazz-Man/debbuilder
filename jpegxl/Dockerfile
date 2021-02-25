@@ -1,4 +1,4 @@
-FROM debbuilder
+FROM vsokolyk/debbuilder
 
 WORKDIR work
 
@@ -6,7 +6,7 @@ COPY --from=mozjpeg /work/*.deb /work/
 COPY --from=libtiff /work/deb/*.deb /work/
 COPY --from=libwebp /work/deb/*.deb /work/
 
-RUN apt-get -yqq update \
+RUN /update.sh \
     && apt install -y /work/*.deb \
     && apt install -y libbrotli-dev libopenexr-dev libgoogle-perftools-dev \
     && git clone https://gitlab.com/wg1/jpeg-xl.git --recursive \
@@ -25,11 +25,8 @@ RUN apt-get -yqq update \
         --install=no \
         -D \
         --default \
-    && cp *.deb /work \
-    && apt-get clean \
-    && apt remove -y libtiff-dev libbrotli-dev libgif-dev mozjpeg libopenexr-dev libpng-dev libwebp-dev \
-    && apt autoremove -y \
-    && apt autoclean \
+    && mkdir -p /work/deb/ \
+    && cp *.deb /work/deb \
+    && apt remove -y libbrotli-dev libgif-dev mozjpeg libopenexr-dev libpng-dev libwebp-dev libtiff-dev libgoogle-perftools-dev \
     && rm -rf /work/jpeg-xl/* \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/* /var/tmp/*
+    && /clean.sh

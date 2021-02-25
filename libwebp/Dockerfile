@@ -1,9 +1,9 @@
-FROM debbuilder
+FROM vsokolyk/debbuilder
 WORKDIR work
 COPY --from=mozjpeg /work/*.deb /work/
 COPY --from=libtiff /work/deb/*.deb /work/
 
-RUN apt-get -yqq update \
+RUN /update.sh \
     && apt-get install -y /work/*.deb \
     && apt-get install -y libgif-dev libsdl1.2-dev \
     && git clone https://github.com/webmproject/libwebp.git \
@@ -26,8 +26,5 @@ RUN apt-get -yqq update \
     && mkdir -p /work/deb/ \
     && cp *.deb /work/deb \
     && apt remove -y mozjpeg libtiff-dev libgif-dev libsdl1.2-dev \
-    && apt autoremove -y \
-    && apt autoclean \
     && rm -rf /work/libwebp \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/* /var/tmp/*
+    && /clean.sh

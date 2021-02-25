@@ -7,10 +7,10 @@ Essential: no
 Maintainer: @PKGVENDOR@ <@PKGEMAIL@>
 Homepage: @PKGURL@
 Installed-Size: {__SIZE}
-Provides: libjpeg-dev,libjpeg8, libjpeg8-dev
+Provides: libjpeg-dev,libjpeg8, libjpeg8-dev, libjpeg-turbo8
 Depends: libpng-dev
 Conflicts: libjpeg-dev
-Replaces: libjpeg-dev,libjpeg8,libjpeg8-dev
+Replaces: libjpeg-dev,libjpeg8, libjpeg8-dev, libjpeg-turbo8
 Description: A JPEG codec that provides increased compression for JPEG images (at the expense of compression performance)
  mozjpeg is a fork of libjpeg-turbo that aims to speed up load times of web
  pages by reducing the size (and, by extension, the transmission time) of JPEG

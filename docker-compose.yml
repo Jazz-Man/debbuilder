@@ -1,43 +1,41 @@
-version: "3"
+version: "3.8"
 services:
-  debbuilder:
-    image: debbuilder
-    container_name: debbuilder_base
-    environment:
-      DEBIAN_FRONTEND: noninteractive
-      LANG: en_US.utf8
-    build:
-      context: .
   mozjpeg:
     image: mozjpeg
-    container_name: mozjpeg
     build: ./mozjpeg
-    links:
-      - debbuilder
+    volumes:
+      - ./deb-dist:/data:rw
 
   libtiff:
     image: libtiff
-    container_name: libtiff
     build: ./libtiff
     links:
       - mozjpeg
+    volumes:
+      - ./deb-dist:/data:rw
 
   libwebp:
     image: libwebp
-    container_name: libwebp
     build: ./libwebp
     links:
       - mozjpeg
       - libtiff
+    volumes:
+      - ./deb-dist:/data:rw
 
   jpegxl:
     image: jpegxl
-    container_name: jpegxl
     build: ./jpegxl
     links:
       - libwebp
+    volumes:
+      - ./deb-dist:/data:rw
 
   image_magick:
     image: image_magick
     container_name: image_magick
     build: ./ImageMagick
+    links:
+      - jpegxl
+    volumes:
+      - ./deb-dist:/data:rw
